@@ -11,6 +11,108 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* ============================================
+        TELA DE LOGIN
+        ============================================ */
+        #loginScreen {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            z-index: 10000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #loginScreen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px 35px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-box h1 {
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .login-box .subtitle {
+            font-size: 13px;
+            color: #a0aec0;
+            margin-bottom: 28px;
+        }
+
+        .login-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.25);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .login-input::placeholder {
+            color: #8892b0;
+        }
+
+        .login-input:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            color: #ff6b6b;
+            font-size: 13px;
+            margin-top: 12px;
+            min-height: 18px;
+        }
+
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -334,8 +436,25 @@
 <base target="_blank">
 </head>
 <body>
+    <!-- ============================================
+     TELA DE LOGIN
+     ============================================ -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <span class="login-icon">🗺️</span>
+            <h1>Bem-vindo(a) ao aplicatio de "não em casa & revisita" !</h1>
+            <p class="subtitle">Sistema de Revisitas v3.0</p>
+            <input type="text" id="loginName" class="login-input" placeholder="Seu nome" autocomplete="off">
+            <input type="password" id="loginPass" class="login-input" placeholder="Senha de acesso" autocomplete="off">
+            <button class="login-btn" onclick="doLogin()">Entrar</button>
+            <div class="login-error" id="loginError"></div>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>Controle de não em casa e Revisita</h1>
+        <div class="top-bar-header">
+            <h1>Atenção <span class="user-badge" id="userBadge">Usuário</span>, Controle "não em casa & Revisita" </h1>
+        </div>
 
         <div class="botoes-superiores">
             <button id="btnInserir" onclick="inserirRegistro()">➕ INSERIR</button>
@@ -412,6 +531,44 @@
         let enderecoFiltro = "";
         let encodingDetectado = "UTF-8";
 
+        // ═══════════════════════════════════════════════════════════════════
+        // LOGIN
+        // ═══════════════════════════════════════════════════════════════════
+        const LOGIN_PASSWORD = "ncasa8";
+        let currentUser = null;
+
+        function doLogin() {
+            const name = document.getElementById('loginName').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            const errorEl = document.getElementById('loginError');
+
+            if (!name) {
+                errorEl.textContent = "Por favor, digite seu nome.";
+                return;
+            }
+            if (pass !== LOGIN_PASSWORD) {
+                errorEl.textContent = "Senha incorreta. Tente novamente.";
+                document.getElementById('loginPass').value = '';
+                return;
+            }
+
+            currentUser = name;
+            document.getElementById('userBadge').textContent = name;
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('appContainer').classList.add('active');
+
+            // Inicializa o app após login
+            setTimeout(initApp, 500);
+        }
+
+        // Enter no login
+        document.getElementById('loginPass').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') doLogin();
+        });
+        document.getElementById('loginName').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') document.getElementById('loginPass').focus();
+        });
+
         // ==========================================
         // FUNCAO: MOSTRAR MENSAGEM
         // ==========================================
@@ -422,124 +579,8 @@
             setTimeout(() => { el.className = 'status'; }, 4000);
         }
 
-        // ==========================================
-        // TABELA DE CONVERSAO WINDOWS-1252 -> UTF-8
-        // ==========================================
-        /*const win1252ToUtf8 = {
-            0x80: '\u20AC', 0x82: '\u201A', 0x83: '\u0192', 0x84: '\u201E', 0x85: '\u2026',
-            0x86: '\u2020', 0x87: '\u2021', 0x88: '\u02C6', 0x89: '\u2030', 0x8A: '\u0160',
-            0x8B: '\u2039', 0x8C: '\u0152', 0x8E: '\u017D', 0x91: '\u2018', 0x92: '\u2019',
-            0x93: '\u201C', 0x94: '\u201D', 0x95: '\u2022', 0x96: '\u2013', 0x97: '\u2014',
-            0x98: '\u02DC', 0x99: '\u2122', 0x9A: '\u0161', 0x9B: '\u203A', 0x9C: '\u0153',
-            0x9E: '\u017E', 0x9F: '\u0178',
-            0xC0: '\u00C0', 0xC1: '\u00C1', 0xC2: '\u00C2', 0xC3: '\u00C3', 0xC4: '\u00C4',
-            0xC5: '\u00C5', 0xC6: '\u00C6', 0xC7: '\u00C7', 0xC8: '\u00C8', 0xC9: '\u00C9',
-            0xCA: '\u00CA', 0xCB: '\u00CB', 0xCC: '\u00CC', 0xCD: '\u00CD', 0xCE: '\u00CE',
-            0xCF: '\u00CF', 0xD0: '\u00D0', 0xD1: '\u00D1', 0xD2: '\u00D2', 0xD3: '\u00D3',
-            0xD4: '\u00D4', 0xD5: '\u00D5', 0xD6: '\u00D6', 0xD7: '\u00D7', 0xD8: '\u00D8',
-            0xD9: '\u00D9', 0xDA: '\u00DA', 0xDB: '\u00DB', 0xDC: '\u00DC', 0xDD: '\u00DD',
-            0xDE: '\u00DE', 0xDF: '\u00DF', 0xE0: '\u00E0', 0xE1: '\u00E1', 0xE2: '\u00E2',
-            0xE3: '\u00E3', 0xE4: '\u00E4', 0xE5: '\u00E5', 0xE6: '\u00E6', 0xE7: '\u00E7',
-            0xE8: '\u00E8', 0xE9: '\u00E9', 0xEA: '\u00EA', 0xEB: '\u00EB', 0xEC: '\u00EC',
-            0xED: '\u00ED', 0xEE: '\u00EE', 0xEF: '\u00EF', 0xF0: '\u00F0', 0xF1: '\u00F1',
-            0xF2: '\u00F2', 0xF3: '\u00F3', 0xF4: '\u00F4', 0xF5: '\u00F5', 0xF6: '\u00F6',
-            0xF7: '\u00F7', 0xF8: '\u00F8', 0xF9: '\u00F9', 0xFA: '\u00FA', 0xFB: '\u00FB',
-            0xFC: '\u00FC', 0xFD: '\u00FD', 0xFE: '\u00FE', 0xFF: '\u00FF'
-        };
-
-        // ==========================================
-        // FUNCAO: CONVERTER WINDOWS-1252 PARA UTF-8
-        // ==========================================
-        function converterWin1252ParaUtf8(texto) {
-            let resultado = '';
-            for (let i = 0; i < texto.length; i++) {
-                const codigo = texto.charCodeAt(i);
-                if (codigo >= 0x80 && codigo <= 0xFF && win1252ToUtf8[codigo]) {
-                    resultado += win1252ToUtf8[codigo];
-                } else {
-                    resultado += texto.charAt(i);
-                }
-            }
-            return resultado;
-        }
-
-        // ==========================================
-        // FUNCAO: DETECTAR ENCODING DO TEXTO
-        // ==========================================
-        function detectarEncoding(texto) {
-            let contagemWin1252 = 0;
-            let contagemUtf8 = 0;
-
-            for (let i = 0; i < texto.length; i++) {
-                const codigo = texto.charCodeAt(i);
-                if (codigo >= 0x80 && codigo <= 0x9F) {
-                    contagemWin1252++;
-                }
-                if (codigo >= 0xC0 && codigo <= 0xFD) {
-                    contagemUtf8++;
-                }
-            }
-
-            if (contagemWin1252 > contagemUtf8 && contagemWin1252 > 0) {
-                return 'Windows-1252';
-            }
-            return 'UTF-8';
-        }   */
-
-        // ==========================================
-        // FUNCAO: CARREGAR CSV COM DETECCAO DE ENCODING
-        /*async function carregarCSV() {
-            try {
-                const resposta = await fetch('Revisita4.csv');
-                const buffer = await resposta.arrayBuffer();
-                const bytes = new Uint8Array(buffer);
-
-                let texto;
-                try {
-                    texto = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
-                    encodingDetectado = 'UTF-8';
-                } catch (e) {
-                    texto = new TextDecoder('iso-8859-1').decode(bytes);
-                    encodingDetectado = 'Windows-1252';
-                }
-
-                if (encodingDetectado === 'Windows-1252') {
-                    texto = converterWin1252ParaUtf8(texto);
-                }
-
-                if (texto.charCodeAt(0) === 0xFEFF) {
-                    texto = texto.substring(1);
-                }
-
-                const linhas = texto.trim().split(/\r?\n/);
-
-                dadosCSV = [];
-                const territoriosTemp = new Set();
-
-                for (let i = 1; i < linhas.length; i++) {
-                    const linha = linhas[i].trim();
-                    if (!linha) continue;
-
-                    const partes = parseCSVLine(linha);
-
-                    if (partes.length >= 2) {
-                        const terr = (partes[0] || '').trim().toUpperCase();
-                        const end = (partes[1] || '').trim();
-                        const num = (partes[2] || '').trim();
-                        const obs = (partes[3] || '').trim();
-
-                        dadosCSV.push({
-                            id: i - 1,
-                            territorio: terr,
-                            endereco: end,
-                            numeros: num,
-                            obs: obs
-                        });
-
-                        if (terr) territoriosTemp.add(terr);
-                    }
-                }      */
-
+        // FUNCAO: DETECTAR ENCODING DO TEXTO:UTF-8 ou 1252 retirado, porque não funciona bem no navegador
+        //   =======      FUNCAO: CARREGAR CSV COM DETECCAO DE ENCODING
         // Lê o arquivo CSV e cria a lista de territórios automaticamente
         async function carregarCSV() {
             try {
@@ -949,5 +990,3 @@
     </script>
 </body>
 </html>
-
-
