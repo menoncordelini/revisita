@@ -496,7 +496,7 @@
         <div id="statusMsg" class="status"></div>
         <div class="encoding-info" id="encodingInfo"></div>
         <div class="info">
-            <p>Dados salvos via Firebase • Máx. 60 caracteres •</p>
+            <p>Dados salvos via Firebase • Máx. 70 caracteres •</p>
         </div>
     </div>
 
@@ -904,8 +904,8 @@
             const numeros = document.getElementById('inputNumeros').value.trim();
             const obs = document.getElementById('inputObs').value.trim();
 
-            if (numeros.length > 60 || obs.length > 60) {
-                mostrarStatus('⚠️ Maximo 60 caracteres por campo!', 'erro');
+            if (numeros.length > 70 || obs.length > 70) {
+                mostrarStatus('⚠️ Maximo 70 caracteres por campo!', 'erro');
                 return;
             }
 
