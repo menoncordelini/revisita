@@ -496,7 +496,7 @@
         <div id="statusMsg" class="status"></div>
         <div class="encoding-info" id="encodingInfo"></div>
         <div class="info">
-            <p>Dados salvos via Firebase • Máx. 70 caracteres •</p>
+            <p>Dados salvos via Firebase • Máx. 80 caracteres •</p>
         </div>
     </div>
 
@@ -768,7 +768,7 @@
                     input.type = 'text';
                     input.className = 'input-edicao';
                     input.value = numeros;
-                    input.maxLength = 60;
+                    input.maxLength = 80;
                     input.id = 'inputNumeros';
                     tdNum.appendChild(input);
                 } else {
@@ -786,7 +786,7 @@
                     input.type = 'text';
                     input.className = 'input-edicao';
                     input.value = obs;
-                    input.maxLength = 60;
+                    input.maxLength = 80;
                     input.id = 'inputObs';
                     tdObs.appendChild(input);
                 } else {
@@ -904,8 +904,8 @@
             const numeros = document.getElementById('inputNumeros').value.trim();
             const obs = document.getElementById('inputObs').value.trim();
 
-            if (numeros.length > 70 || obs.length > 70) {
-                mostrarStatus('⚠️ Maximo 70 caracteres por campo!', 'erro');
+            if (numeros.length > 80 || obs.length > 80) {
+                mostrarStatus('⚠️ Maximo 80 caracteres por campo!', 'erro');
                 return;
             }
 
