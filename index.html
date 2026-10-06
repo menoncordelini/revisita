@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+        <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Revisita</title>
 
@@ -11,9 +11,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ============================================
-        TELA DE LOGIN
-        ============================================ */
+        /* ==== TELA DE LOGIN ==== */
         #loginScreen {
             position: fixed;
             inset: 0;
@@ -75,9 +73,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .login-input::placeholder {
-            color: #8892b0;
-        }
+        .login-input::placeholder { color: #8892b0; }
 
         .login-input:focus {
             border-color: #4facfe;
@@ -102,9 +98,7 @@
             box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
         }
 
-        .login-btn:active {
-            transform: translateY(0);
-        }
+        .login-btn:active { transform: translateY(0); }
 
         .login-error {
             color: #ff6b6b;
@@ -179,10 +173,12 @@
             box-shadow: 0 0 15px rgba(0,212,255,0.6);
         }
 
+        /* ==== ÁREA DO TERRITÓRIO COM SETAS ==== */
         .territorio-area {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 20px;
             padding: 15px;
             background: rgba(0,212,255,0.08);
@@ -190,22 +186,21 @@
             border: 1px solid rgba(0,212,255,0.2);
         }
 
-        .setas {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .seta {
-            width: 36px;
-            height: 28px;
-            font-size: 1.2rem;
+        .seta-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
             padding: 0;
             min-width: auto;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
         }
+
+        .seta-esquerda { order: 1; }
+        .territorio-info { order: 2; display: flex; align-items: center; gap: 10px; }
+        .seta-direita { order: 3; }
 
         .label-territorio {
             font-weight: bold;
@@ -225,178 +220,153 @@
             text-transform: uppercase;
         }
 
-        /* ========================================== */
-        /* ESTILO DA TABELA - MODO PC (PADRAO)        */
-        /* ========================================== */
-        .tabela-container {
-            overflow-x: auto;
+        /* ==== CORPO CENTRAL - FACES DA QUADRA (3 LINHAS) ==== */
+        .faces-container {
+            max-height: calc(100vh - 320px);
+            overflow-y: auto;
+            overflow-x: hidden;
             border-radius: 12px;
             border: 1px solid rgba(0,212,255,0.2);
+            padding: 10px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .faces-container::-webkit-scrollbar { width: 8px; }
+        .faces-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+        .faces-container::-webkit-scrollbar-thumb { background: #00d4ff; border-radius: 4px; }
+        .faces-container::-webkit-scrollbar-thumb:hover { background: #00b8d4; }
+
+        .face-quadra {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0,212,255,0.15);
+            overflow: hidden;
         }
 
-        thead th {
-            background: rgba(0,212,255,0.15);
-            color: #00d4ff;
-            padding: 12px 8px;
-            text-align: left;
-            font-weight: bold;
-            border-bottom: 2px solid #00d4ff;
+        .face-quadra:last-child { margin-bottom: 0; }
+
+        /* LINHA 1: Checkbox + Território + Endereço */
+        .face-linha1 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: rgba(0,212,255,0.1);
+            border-bottom: 1px solid rgba(0,212,255,0.2);
         }
 
-        tbody td {
-            padding: 10px 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            vertical-align: middle;
-        }
-
-        tbody tr { transition: background 0.2s; }
-        tbody tr:hover { background: rgba(0,212,255,0.05); }
-        tbody tr.selecionado {
-            background: rgba(0,212,255,0.15);
-            border-left: 3px solid #00d4ff;
-        }
-
-        .checkbox-selecao {
+        .face-checkbox {
             width: 22px;
             height: 22px;
             cursor: pointer;
             accent-color: #00d4ff;
+            flex-shrink: 0;
         }
 
-        /* Checkbox mobile: escondido no PC */
-        .checkbox-mobile {
-            display: none;
-        }
-
-        /* Checkbox PC: visivel no PC */
-        .checkbox-pc {
-            display: inline-block;
-        }
-
-        .input-edicao {
-            width: 100%;
-            padding: 6px;
-            border: 2px solid #00d4ff;
+        .face-territorio {
+            background: #00d4ff;
+            color: #1a1a2e;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 4px 10px;
             border-radius: 6px;
-            background: rgba(0,0,0,0.4);
+            min-width: 45px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .face-endereco {
+            color: #e4eef0;
+            font-weight: bold;
+            font-size: 1.4rem;
+            flex: 1;
+            text-align: center;
+        }
+
+        /* LINHA 2: Não em casa */
+        .face-linha2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* LINHA 3: Observações */
+        .face-linha3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+        }
+
+        .face-label {
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 0.9rem;
+            min-width: 100px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .face-input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.3);
             color: #fff;
             font-size: 0.9rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+            min-width: 0;
         }
 
-        .texto-celula { color: #e0e0e0; }
+        .face-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 8px rgba(0,212,255,0.3);
+        }
 
-        /* ========================================== */
-        /* MODO CELULAR - CARDS EMPILHADOS            */
-        /* ========================================== */
+        .face-texto {
+            flex: 1;
+            padding: 8px 10px;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+            word-break: break-all;
+            min-height: 35px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 6px;
+        }
+
+        .face-quadra.selecionada {
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0,212,255,0.2);
+        }
+
+        /* ==== RESPONSIVO ==== */
         @media (max-width: 600px) {
-            /* Esconde o cabecalho da tabela no celular */
-            thead {
-                display: none;
-            }
+            .container { padding: 10px; }
+            h1 { font-size: 1.2rem; }
+            button { padding: 8px 12px; font-size: 0.8rem; min-width: 80px; }
+            .botoes-superiores { gap: 5px; }
+            #campoTerritorio { width: 50px; font-size: 1rem; }
 
-            /* Cada linha vira um card compacto */
-            tbody tr {
-                display: block;
-                margin-bottom: 6px;          /* era 16px;  DISTANCIA MAIOR entre cards */
-                padding: 8px 10px;            /* PADDING MENOR (mais estreito) */
-                background: rgba(255,255,255,0.05);
-                border-radius: 10px;
-                border: 1px solid rgba(0,212,255,0.15);
-                border-left: 3px solid transparent;
-            }
+            .territorio-area { gap: 10px; padding: 10px; }
+            .seta-btn { width: 35px; height: 35px; font-size: 1.2rem; }
 
-            tbody tr.selecionado {
-                border-left: 3px solid #00d4ff;
-                background: rgba(0,212,255,0.1);
-            }
+            .faces-container { max-height: calc(100vh - 280px); }
 
-            /* Cada celula vira uma linha dentro do card */
-            tbody td {
-                display: flex;
-                align-items: center;
-                padding: 2px 0;               /* era  3px 0;  MENOR padding vertical */
-                font-size: 0.85rem;           /* FONTE MENOR */
-                border-bottom: none;
-            }
+            .face-linha1 { flex-wrap: wrap; gap: 8px; padding: 10px; }
+            .face-territorio { font-size: 0.85rem; padding: 3px 8px; min-width: 38px; }
+            .face-endereco { font-size: 0.85rem; }
 
-            tbody td:last-child {
-                border-bottom: none;
-            }
-
-            /* ========================================== */
-            /* CHECKBOX + TERRITORIO NA MESMA LINHA       */
-            /* ========================================== */
-            /* Esconde a celula do checkbox sozinha (vai junto com territorio) */
-            td:first-child {
-                display: none;
-            }
-
-            /* Territorio: checkbox + texto lado a lado */
-            td:nth-child(2) {
-                display: flex;
-                align-items: center;
-                gap: 2px;                     /* era   8px;  espaco entre checkbox e texto */
-                padding-top: 2px;
-                padding-bottom: 4px;
-                border-bottom: 1px solid rgba(0,212,255,0.1);
-                margin-bottom: 2px;
-            }
-
-            /* Remove o rotulo "Territorio:" pois ja esta implicito */
-            td:nth-child(2)::before {
-                content: "Terr.: "; font-size: 0.8rem; color: #00d4ff; font-weight: bold  ;
-            }
-
-            /* Adiciona rotulos antes dos outros campos */
-            td:nth-child(3)::before { content: "End.:    "; font-size: 0.8rem; }
-            td:nth-child(4)::before { content: "Nºs🔢  "; font-size: 0.8rem; }
-            td:nth-child(5)::before { content: "Obs. :📝  "; font-size: 0.8rem; }
-
-            /* Ajusta inputs no modo edicao */
-            .input-edicao {
-                flex: 1;
-                margin-left: 6px;
-                padding: 4px 6px;
-                font-size: 0.85rem;
-            }
-
-            .texto-celula {
-                flex: 1;
-                margin-left: 6px;
-                word-break: break-word;
-            }
-
-            /* No mobile: esconde checkbox do PC, mostra o da celula de territorio */
-            .checkbox-pc {
-                display: none;
-            }
-
-            .checkbox-mobile {
-                display: inline-block;
-                width: 20px;
-                height: 20px;
-                flex-shrink: 0;
-                margin-right: 4px;
-            }
-
-            /* Checkbox dentro da celula de territorio */
-            .checkbox-selecao {
-                width: 20px;
-                height: 20px;
-                flex-shrink: 0;
-            }
-
-            /* Destaque do territorio */
-            td:nth-child(2) .texto-celula {
-                color: #00d4ff;
-                font-weight: bold;
-                font-size: 0.9rem;
-            }
+            /* MANTER 3 LINHAS NO MOBILE - label e campo na mesma linha */
+            .face-linha2, .face-linha3 { flex-direction: row; align-items: center; gap: 8px; padding: 8px 10px; }
+            .face-label { min-width: 85px; font-size: 0.75rem; }
+            .face-input, .face-texto { flex: 1; width: auto; font-size: 0.75rem; padding: 6px 8px; min-width: 0; }
         }
 
         .status {
@@ -424,26 +394,16 @@
             color: #666;
             margin-top: 5px;
         }
-
-        @media (max-width: 600px) {
-            .container { padding: 10px; }
-            h1 { font-size: 1.2rem; }
-            button { padding: 8px 12px; font-size: 0.8rem; min-width: 80px; }
-            .botoes-superiores { gap: 5px; }
-            #campoTerritorio { width: 50px; font-size: 1rem; }
-        }
     </style>
 <base target="_blank">
 </head>
 <body>
-    <!-- ============================================
-     TELA DE LOGIN
-     ============================================ -->
+    <!-- ==== TELA DE LOGIN ==== -->
     <div id="loginScreen">
         <div class="login-box">
             <span class="login-icon">🗺️</span>
-            <h1>Bem-vindo(a)! Aplicativo "não em casa & revisita" !</h1>
-            <p class="subtitle">Sistema de Revisitas v4.0</p>
+            <h1>Bem-vindo(a)!</h1>
+            <p class="subtitle">Sistema de Revisitas v5.3</p>
             <input type="text" id="loginName" class="login-input" placeholder="Seu nome" autocomplete="off">
             <input type="password" id="loginPass" class="login-input" placeholder="Senha de acesso" autocomplete="off">
             <button class="login-btn" onclick="doLogin()">Entrar</button>
@@ -451,59 +411,43 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="appContainer">
         <div class="top-bar-header">
-            <h1>Atenção <span class="user-badge" id="userBadge">Usuário</span>, Controle "não em casa & Revisita" </h1>
+            <h1>Atenção <span class="user-badge" id="userBadge">Usuário</span>, Controle "não em casa & Revisita"</h1>
         </div>
 
         <div class="botoes-superiores">
-            <button id="btnInserir" onclick="inserirRegistro()">➕ INSERIR</button>
-            <button id="btnEditar" onclick="editarRegistro()">✏️ EDITAR</button>
+            <button id="btnEditar" onclick="editarRegistro()">✏️ Editar</button>
             <button id="btnGravar" onclick="gravarRegistro()">💾 GRAVAR</button>
-            <button id="btnFiltrar" onclick="filtrarEndereco()">🔍 Filtrar endereço</button>
-            <button id="btnExcluir" onclick="excluirRegistro()">🗑️ EXCLUIR</button>
+            <button id="btnFiltrar" onclick="filtrarEndereco()">🔍 Filtrar</button>
+            <button id="btnExcluir" onclick="excluirRegistro()">🗑️ Excluir</button>
         </div>
 
+        <!-- ==== ÁREA DO TERRITÓRIO COM SETAS ==== -->
         <div class="territorio-area">
-            <div class="setas">
-                <button class="seta" onclick="mudarTerritorio(1)" title="Próximo">▲</button>
-                <button class="seta" onclick="mudarTerritorio(-1)" title="Anterior">▼</button>
+            <button class="seta-btn seta-esquerda" onclick="mudarTerritorio(-1)" title="Território anterior">−</button>
+            <div class="territorio-info">
+                <span class="label-territorio">Território</span>
+                <input type="text" id="campoTerritorio" value="" maxlength="3" 
+                       onchange="carregarTerritorio()" placeholder="1A">
             </div>
-            <span class="label-territorio">territorio</span>
-            <input type="text" id="campoTerritorio" value="" maxlength="3" 
-                   onchange="carregarTerritorio()" placeholder="1A">
+            <button class="seta-btn seta-direita" onclick="mudarTerritorio(1)" title="Próximo território">+</button>
         </div>
 
-        <!-- ========================================== -->
-        <!-- TABELA - MODO PC: VISUAL NORMAL            -->
-        <!-- TABELA - MODO CELULAR: CARDS EMPILHADOS    -->
-        <!-- ========================================== -->
-        <div class="tabela-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width:40px;">☑️</th>
-                        <th style="width:60px;">Terr.</th>
-                        <th>Endereço</th>
-                        <th style="width:100px;">Números</th>
-                        <th>Observações</th>
-                    </tr>
-                </thead>
-                <tbody id="corpoTabela"></tbody>
-            </table>
+        <!-- ==== CORPO CENTRAL - FACES DA QUADRA (3 LINHAS CADA) ==== -->
+        <div class="faces-container" id="facesContainer">
+            <!-- As faces serão renderizadas aqui via JavaScript -->
         </div>
 
         <div id="statusMsg" class="status"></div>
         <div class="encoding-info" id="encodingInfo"></div>
         <div class="info">
-            <p>Dados salvos via Firebase • Máx. 80 caracteres •</p>
+            <p>Dados gravados via Firebase • Máx. 80 caracteres por campo</p>
         </div>
     </div>
 
     <script>
-        // =======================================
-        // CONFIGURACAO DO FIREBASE
-        // =======================================
+        // ==== CONFIGURAÇÃO DO FIREBASE ====
         const firebaseConfig = {
             apiKey: "AIzaSyAF4nstd0eWvodzEabCjvw-G6yUgMMJi04",
             authDomain: "nao-em-casa.firebaseapp.com",
@@ -518,9 +462,7 @@
         const db = firebase.database();
         const revisitasRef = db.ref('revisitas');
 
-        // ==========================================
-        // VARIAVEIS GLOBAIS
-        // ==========================================
+        // ==== VARIÁVEIS GLOBAIS ====
         let dadosCSV = [];
         let territorios = [];
         let dadosFirebase = {};
@@ -529,14 +471,11 @@
         let modoEdicao = false;
         let modoFiltro = false;
         let enderecoFiltro = "";
-        let encodingDetectado = "UTF-8";
 
-        // ═══════════════════════════════════════════════════════════════════
-        // LOGIN
-        // ═══════════════════════════════════════════════════════════════════
         const LOGIN_PASSWORD = "n8";
         let currentUser = null;
 
+        // ==== LOGIN ====
         function doLogin() {
             const name = document.getElementById('loginName').value.trim();
             const pass = document.getElementById('loginPass').value;
@@ -557,21 +496,16 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('appContainer').classList.add('active');
 
-            // Inicializa o app após login
             setTimeout(initApp, 500);
         }
 
-        // Enter no login
-        document.getElementById('loginPass').addEventListener('keypress', function (e) {
+        document.getElementById('loginPass').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') doLogin();
         });
-        document.getElementById('loginName').addEventListener('keypress', function (e) {
+        document.getElementById('loginName').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') document.getElementById('loginPass').focus();
         });
 
-        // ==========================================
-        // FUNCAO: MOSTRAR MENSAGEM
-        // ==========================================
         function mostrarStatus(msg, tipo) {
             const el = document.getElementById('statusMsg');
             el.textContent = msg;
@@ -579,29 +513,24 @@
             setTimeout(() => { el.className = 'status'; }, 4000);
         }
 
-        // FUNCAO: DETECTAR ENCODING DO TEXTO:UTF-8 ou 1252 retirado, porque não funciona bem no navegador
-        //   =======      FUNCAO: CARREGAR CSV COM DETECCAO DE ENCODING
-        // Lê o arquivo CSV e cria a lista de territórios automaticamente
+        // ==== CARREGAR CSV ====
         async function carregarCSV() {
             try {
                 const resposta = await fetch('Revisita4.csv');
                 const texto = await resposta.text();
                 const linhas = texto.trim().split('\n');
 
-                // Limpa os arrays
                 dadosCSV = [];
-                const territoriosTemp = new Set(); // Set = lista sem repetições
+                const territoriosTemp = new Set();
 
-                // Pula a primeira linha (cabeçalho)
                 for (let i = 1; i < linhas.length; i++) {
-                    const partes = linhas[i].split(',');
+                    const partes = parseCSVLine(linhas[i]);
                     if (partes.length >= 2) {
                         const terr = (partes[0] || '').trim().toUpperCase();
                         const end = (partes[1] || '').trim();
                         const num = (partes[2] || '').trim();
                         const obs = (partes[3] || '').trim();
 
-                        // Adiciona ao array de dados
                         dadosCSV.push({
                             id: i - 1,
                             territorio: terr,
@@ -610,7 +539,6 @@
                             obs: obs
                         });
 
-                        // Adiciona o território ao Set (evita duplicatas)
                         if (terr) territoriosTemp.add(terr);
                     }
                 }
@@ -628,14 +556,12 @@
                 console.log('Territórios encontrados:', territorios);
 
                 document.getElementById('encodingInfo').textContent = 
-                    'Encoding detectado: ' + encodingDetectado + ' | ' + dadosCSV.length + ' registros | ' + territorios.length + ' territorios';
+                    dadosCSV.length + ' registros | ' + territorios.length + ' territórios';
 
                 if (territorios.length > 0) {
                     territorioAtual = territorios[0];
                     document.getElementById('campoTerritorio').value = territorioAtual;
                 }
-
-                mostrarStatus('✅ CSV carregado (' + encodingDetectado + '): ' + dadosCSV.length + ' registros', 'sucesso');
 
             } catch (erro) {
                 console.error('Erro ao carregar CSV:', erro);
@@ -643,9 +569,6 @@
             }
         }
 
-        // ==========================================
-        // FUNCAO AUXILIAR: Parse de linha CSV
-        // ==========================================
         function parseCSVLine(linha) {
             const resultado = [];
             let atual = '';
@@ -673,32 +596,24 @@
             return resultado;
         }
 
-        // ==========================================
-        // CARREGAR DADOS DO FIREBASE
-        // ==========================================
         function carregarFirebase() {
             revisitasRef.on('value', (snapshot) => {
                 dadosFirebase = snapshot.val() || {};
-                renderizarTabela();
+                renderizarFaces();
             }, (erro) => {
                 console.error('Erro Firebase:', erro);
-                mostrarStatus('❌ Erro de conexao com Firebase', 'erro');
+                mostrarStatus('❌ Erro de conexão com Firebase', 'erro');
             });
         }
 
-        // ==========================================
-        // FUNCAO AUXILIAR: Criar chave do Firebase
-        // ==========================================
         function criarChave(territorio, endereco) {
             return (territorio + '_' + endereco).replace(/[.#$\[\]]/g, '_');
         }
 
-        // ==========================================
-        // RENDERIZAR TABELA
-        // ==========================================
-        function renderizarTabela() {
-            const corpo = document.getElementById('corpoTabela');
-            corpo.innerHTML = '';
+        // ==== RENDERIZAR FACES DA QUADRA - 3 LINHAS POR FACE ====
+        function renderizarFaces() {
+            const container = document.getElementById('facesContainer');
+            container.innerHTML = '';
 
             let registros = [];
 
@@ -709,7 +624,7 @@
             }
 
             if (registros.length === 0) {
-                corpo.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#888;">Nenhum registro encontrado</td></tr>';
+                container.innerHTML = '<div style="text-align:center;padding:30px;color:#888;">Nenhum registro encontrado para este território</div>';
                 return;
             }
 
@@ -720,101 +635,97 @@
                 const numeros = dadosFB.numeros !== undefined ? dadosFB.numeros : reg.numeros;
                 const obs = dadosFB.obs !== undefined ? dadosFB.obs : reg.obs;
 
-                const tr = document.createElement('tr');
-                tr.id = 'linha_' + idx;
-                if (idx === indiceSelecionado) tr.classList.add('selecionado');
-                if (modoFiltro) tr.classList.add('modo-filtro');
+                const divFace = document.createElement('div');
+                divFace.className = 'face-quadra';
+                divFace.id = 'face_' + idx;
+                if (idx === indiceSelecionado) divFace.classList.add('selecionada');
 
-                // Checkbox (coluna 1 - visivel no PC, escondido no mobile)
-                const tdCheck = document.createElement('td');
-                tdCheck.className = 'coluna-checkbox';
+                // ========== LINHA 1: Checkbox + Território + Endereço ==========
+                const divLinha1 = document.createElement('div');
+                divLinha1.className = 'face-linha1';
+
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.className = 'checkbox-selecao checkbox-pc';
+                checkbox.className = 'face-checkbox';
                 checkbox.checked = (idx === indiceSelecionado);
-                checkbox.onclick = () => selecionarLinha(idx);
-                tdCheck.appendChild(checkbox);
-                tr.appendChild(tdCheck);
+                checkbox.onclick = () => selecionarFace(idx);
+                divLinha1.appendChild(checkbox);
 
-                // Territorio (com checkbox embutido para mobile)
-                const tdTerr = document.createElement('td');
-                tdTerr.className = 'coluna-territorio';
+                const spanTerritorio = document.createElement('span');
+                spanTerritorio.className = 'face-territorio';
+                spanTerritorio.textContent = reg.territorio;
+                divLinha1.appendChild(spanTerritorio);
 
-                // Checkbox para mobile (dentro da celula de territorio)
-                const checkboxMobile = document.createElement('input');
-                checkboxMobile.type = 'checkbox';
-                checkboxMobile.className = 'checkbox-selecao checkbox-mobile';
-                checkboxMobile.checked = (idx === indiceSelecionado);
-                checkboxMobile.onclick = () => selecionarLinha(idx);
-                tdTerr.appendChild(checkboxMobile);
+                const spanEndereco = document.createElement('span');
+                spanEndereco.className = 'face-endereco';
+                spanEndereco.textContent = reg.endereco;
+                divLinha1.appendChild(spanEndereco);
 
-                // Texto do territorio
-                const spanTerr = document.createElement('span');
-                spanTerr.className = 'texto-celula';
-                spanTerr.textContent = reg.territorio;
-                tdTerr.appendChild(spanTerr);
+                divFace.appendChild(divLinha1);
 
-                tr.appendChild(tdTerr);
+                // ========== LINHA 2: Não em casa ==========
+                const divLinha2 = document.createElement('div');
+                divLinha2.className = 'face-linha2';
 
-                // Endereco
-                const tdEnd = document.createElement('td');
-                tdEnd.textContent = reg.endereco;
-                tr.appendChild(tdEnd);
+                const labelNaoEmCasa = document.createElement('span');
+                labelNaoEmCasa.className = 'face-label';
+                labelNaoEmCasa.textContent = 'Não em casa:';
+                divLinha2.appendChild(labelNaoEmCasa);
 
-                // Numeros
-                const tdNum = document.createElement('td');
                 if (modoEdicao && idx === indiceSelecionado) {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.className = 'input-edicao';
-                    input.value = numeros;
-                    input.maxLength = 80;
-                    input.id = 'inputNumeros';
-                    tdNum.appendChild(input);
+                    const inputNaoEmCasa = document.createElement('input');
+                    inputNaoEmCasa.type = 'text';
+                    inputNaoEmCasa.className = 'face-input';
+                    inputNaoEmCasa.value = numeros;
+                    inputNaoEmCasa.maxLength = 80;
+                    inputNaoEmCasa.id = 'inputNaoEmCasa_' + idx;
+                    inputNaoEmCasa.placeholder = ' ';
+                    divLinha2.appendChild(inputNaoEmCasa);
                 } else {
-                    const span = document.createElement('span');
-                    span.className = 'texto-celula';
-                    span.textContent = numeros;
-                    tdNum.appendChild(span);
+                    const spanNaoEmCasa = document.createElement('span');
+                    spanNaoEmCasa.className = 'face-texto';
+                    spanNaoEmCasa.textContent = numeros || ' ';
+                    divLinha2.appendChild(spanNaoEmCasa);
                 }
-                tr.appendChild(tdNum);
+                divFace.appendChild(divLinha2);
 
-                // Observacoes
-                const tdObs = document.createElement('td');
+                // ========== LINHA 3: Observações ==========
+                const divLinha3 = document.createElement('div');
+                divLinha3.className = 'face-linha3';
+
+                const labelObs = document.createElement('span');
+                labelObs.className = 'face-label';
+                labelObs.textContent = 'Obs.:';
+                divLinha3.appendChild(labelObs);
+
                 if (modoEdicao && idx === indiceSelecionado) {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.className = 'input-edicao';
-                    input.value = obs;
-                    input.maxLength = 80;
-                    input.id = 'inputObs';
-                    tdObs.appendChild(input);
+                    const inputObs = document.createElement('input');
+                    inputObs.type = 'text';
+                    inputObs.className = 'face-input';
+                    inputObs.value = obs;
+                    inputObs.maxLength = 80;
+                    inputObs.id = 'inputObs_' + idx;
+                    inputObs.placeholder = '.';
+                    divLinha3.appendChild(inputObs);
                 } else {
-                    const span = document.createElement('span');
-                    span.className = 'texto-celula';
-                    span.textContent = obs;
-                    tdObs.appendChild(span);
+                    const spanObs = document.createElement('span');
+                    spanObs.className = 'face-texto';
+                    spanObs.textContent = obs || ' ';
+                    divLinha3.appendChild(spanObs);
                 }
-                tr.appendChild(tdObs);
+                divFace.appendChild(divLinha3);
 
-                corpo.appendChild(tr);
+                container.appendChild(divFace);
             });
         }
 
-        // ==========================================
-        // SELECIONAR LINHA
-        // ==========================================
-        function selecionarLinha(idx) {
+        function selecionarFace(idx) {
             indiceSelecionado = idx;
             modoEdicao = false;
-            document.getElementById('btnInserir').classList.remove('ativo');
             document.getElementById('btnEditar').classList.remove('ativo');
-            renderizarTabela();
+            renderizarFaces();
         }
 
-        // ==========================================
-        // MUDAR TERRITORIO (SETAS)
-        // ==========================================
         function mudarTerritorio(direcao) {
             modoFiltro = false;
             const idxAtual = territorios.indexOf(territorioAtual);
@@ -824,73 +735,41 @@
             territorioAtual = territorios[novoIdx];
             indiceSelecionado = -1;
             document.getElementById('campoTerritorio').value = territorioAtual;
-            renderizarTabela();
+            renderizarFaces();
         }
 
-        // ==========================================
-        // CARREGAR TERRITORIO DIGITADO
-        // ==========================================
         function carregarTerritorio() {
             modoFiltro = false;
             const valor = document.getElementById('campoTerritorio').value.trim().toUpperCase();
             if (territorios.includes(valor)) {
                 territorioAtual = valor;
                 indiceSelecionado = -1;
-                renderizarTabela();
+                renderizarFaces();
             } else {
-                mostrarStatus('⚠️ Territorio invalido. Disponiveis: ' + territorios.join(', '), 'erro');
+                mostrarStatus('⚠️ Território inválido. Disponíveis: ' + territorios.join(', '), 'erro');
                 document.getElementById('campoTerritorio').value = territorioAtual;
             }
         }
 
-        // ==========================================
-        // INSERIR REGISTRO
-        // ==========================================
-        function inserirRegistro() {
-            if (modoFiltro) {
-                mostrarStatus('⚠️ Saia do modo filtro primeiro', 'info');
-                return;
-            }
-
-            const registros = dadosCSV.filter(r => r.territorio === territorioAtual);
-            if (indiceSelecionado < 0 || indiceSelecionado >= registros.length) {
-                mostrarStatus('⚠️ Selecione um endereco primeiro (clique no ☑️)', 'info');
-                return;
-            }
-
-            modoEdicao = true;
-            document.getElementById('btnInserir').classList.add('ativo');
-            document.getElementById('btnEditar').classList.add('ativo');
-            renderizarTabela();
-            mostrarStatus('✏️ Modo INSERIR ativo. Adicione caracteres aos campos e clique em GRAVAR', 'info');
-        }
-
-        // ==========================================
-        // EDITAR REGISTRO
-        // ==========================================
         function editarRegistro() {
             const registros = modoFiltro 
                 ? dadosCSV.filter(r => r.endereco === enderecoFiltro)
                 : dadosCSV.filter(r => r.territorio === territorioAtual);
 
             if (indiceSelecionado < 0 || indiceSelecionado >= registros.length) {
-                mostrarStatus('⚠️ Selecione um endereco primeiro', 'info');
+                mostrarStatus('⚠️ Selecione uma face primeiro (marque o checkbox)', 'info');
                 return;
             }
 
             modoEdicao = true;
-            document.getElementById('btnInserir').classList.add('ativo');
             document.getElementById('btnEditar').classList.add('ativo');
-            renderizarTabela();
-            mostrarStatus('✏️ Modo EDITAR ativo. Altere os campos e clique em GRAVAR', 'info');
+            renderizarFaces();
+            mostrarStatus('✏️ Modo Editar ativo. Altere os campos e clique em GRAVAR', 'info');
         }
 
-        // ==========================================
-        // GRAVAR REGISTRO
-        // ==========================================
         function gravarRegistro() {
             if (!modoEdicao) {
-                mostrarStatus('⚠️ Clique em INSERIR ou EDITAR primeiro', 'info');
+                mostrarStatus('⚠️ Clique em Editar primeiro', 'info');
                 return;
             }
 
@@ -901,11 +780,14 @@
             const reg = registros[indiceSelecionado];
             const chave = criarChave(reg.territorio, reg.endereco);
 
-            const numeros = document.getElementById('inputNumeros').value.trim();
-            const obs = document.getElementById('inputObs').value.trim();
+            const inputNaoEmCasa = document.getElementById('inputNaoEmCasa_' + indiceSelecionado);
+            const inputObs = document.getElementById('inputObs_' + indiceSelecionado);
+
+            const numeros = inputNaoEmCasa ? inputNaoEmCasa.value.trim() : '';
+            const obs = inputObs ? inputObs.value.trim() : '';
 
             if (numeros.length > 80 || obs.length > 80) {
-                mostrarStatus('⚠️ Maximo 80 caracteres por campo!', 'erro');
+                mostrarStatus('⚠️ Máximo 80 caracteres por campo!', 'erro');
                 return;
             }
 
@@ -917,32 +799,28 @@
                 data: new Date().toISOString()
             }).then(() => {
                 modoEdicao = false;
-                document.getElementById('btnInserir').classList.remove('ativo');
                 document.getElementById('btnEditar').classList.remove('ativo');
-                renderizarTabela();  // ← ATUALIZA A TELA: campos voltam a ser texto (não input)
+                renderizarFaces();
                 mostrarStatus('💾 Dados gravados com sucesso!', 'sucesso');
             }).catch(erro => {
                 mostrarStatus('❌ Erro ao gravar: ' + erro.message, 'erro');
             });
         }
 
-        // ==========================================
-        // EXCLUIR REGISTRO
-        // ==========================================
         function excluirRegistro() {
             const registros = modoFiltro 
                 ? dadosCSV.filter(r => r.endereco === enderecoFiltro)
                 : dadosCSV.filter(r => r.territorio === territorioAtual);
 
             if (indiceSelecionado < 0 || indiceSelecionado >= registros.length) {
-                mostrarStatus('⚠️ Selecione um endereco primeiro', 'info');
+                mostrarStatus('⚠️ Selecione uma face primeiro', 'info');
                 return;
             }
 
             const reg = registros[indiceSelecionado];
             const chave = criarChave(reg.territorio, reg.endereco);
 
-            if (!confirm('Tem certeza que deseja limpar os campos Numeros e Observacoes?')) {
+            if (!confirm('Tem certeza que deseja limpar os campos "Não em casa" e "Observações"?')) {
                 return;
             }
 
@@ -953,20 +831,17 @@
                 obs: '',
                 data: new Date().toISOString()
             }).then(() => {
-                mostrarStatus('🗑️ Campos excluidos!', 'sucesso');
+                mostrarStatus('🗑️ Campos excluídos!', 'sucesso');
             }).catch(erro => {
                 mostrarStatus('❌ Erro: ' + erro.message, 'erro');
             });
         }
 
-        // ==========================================
-        // FILTRAR ENDERECO
-        // ==========================================
         function filtrarEndereco() {
             const registros = dadosCSV.filter(r => r.territorio === territorioAtual);
 
             if (indiceSelecionado < 0 || indiceSelecionado >= registros.length) {
-                mostrarStatus('⚠️ Selecione um endereco primeiro', 'info');
+                mostrarStatus('⚠️ Selecione uma face primeiro', 'info');
                 return;
             }
 
@@ -975,17 +850,19 @@
             indiceSelecionado = -1;
 
             const total = dadosCSV.filter(r => r.endereco === enderecoFiltro).length;
-            mostrarStatus('🔍 ' + total + ' registro(s) com endereco: ' + enderecoFiltro, 'info');
-            renderizarTabela();
+            mostrarStatus('🔍 ' + total + ' registro(s) com endereço: ' + enderecoFiltro, 'info');
+            renderizarFaces();
         }
 
-        // ==========================================
-        // INICIALIZACAO
-        // ==========================================
-        window.onload = async function() {
-            await carregarCSV();
+        function initApp() {
+            carregarCSV().then(() => {
             carregarFirebase();
-            renderizarTabela();
+            renderizarFaces();
+            });
+        }
+
+        window.onload = function() {
+            // Aguarda o login
         };
     </script>
 </body>
