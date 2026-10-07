@@ -43,9 +43,9 @@
         }
 
         .login-box h1 {
-            font-size: 22px;
+            font-size: 20px;
             color: #fff;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
         .login-box .subtitle {
@@ -128,21 +128,21 @@
         h1 {
             text-align: center;
             color: #00d4ff;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
             text-shadow: 0 0 10px rgba(0,212,255,0.3);
         }
 
         .botoes-superiores {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 2px;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         button {
-            padding: 10px 18px;
+            padding: 8px 16px;
             border: 2px solid #00d4ff;
             background: transparent;
             color: #00d4ff;
@@ -179,10 +179,10 @@
             align-items: center;
             justify-content: center;
             gap: 10px;  /* ==  15px */
-            margin-bottom: 8px; /* == 20px */
-            padding: 10px;    /* == 15px; */
+            margin-bottom: 4px; /* == 20px */
+            padding: 4px;    /* == 15px; */
             background: rgba(0,212,255,0.08);
-            border-radius: 10px;
+            border-radius: 5px;
             border: 1px solid rgba(0,212,255,0.2);
         }
 
@@ -211,7 +211,7 @@
         #campoTerritorio {
             width: 60px;
             padding: 8px;
-            font-size: 1.1rem;
+            font-size: 1.0rem;
             text-align: center;
             border: 2px solid #00d4ff;
             border-radius: 8px;
@@ -237,8 +237,8 @@
 
         .face-quadra {
             background: rgba(255,255,255,0.03);
-            border-radius: 10px;
-            margin-bottom: 15px;
+            border-radius: 5px;
+            margin-bottom: 3px;
             border: 1px solid rgba(0,212,255,0.15);
             overflow: hidden;
         }
@@ -250,7 +250,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 15px;
+            padding: 6px 8px;
             background: rgba(0,212,255,0.1);
             border-bottom: 1px solid rgba(0,212,255,0.2);
         }
@@ -311,7 +311,7 @@
 
         .face-input {
             flex: 1;
-            padding: 8px 10px;
+            padding: 2px 3px;
             border: 1px solid rgba(0,212,255,0.3);
             border-radius: 6px;
             background: rgba(0,0,0,0.3);
@@ -348,25 +348,25 @@
 
         /* ==== RESPONSIVO ==== */
         @media (max-width: 600px) {
-            .container { padding: 10px; }
+            .container { padding: 3px; }
             h1 { font-size: 1.2rem; }
-            button { padding: 8px 12px; font-size: 0.8rem; min-width: 80px; }
+            button { padding: 3px 4px; font-size: 0.7rem; min-width: 70px; }
             .botoes-superiores { gap: 5px; }
-            #campoTerritorio { width: 50px; font-size: 1rem; }
+            #campoTerritorio { width: 45px; font-size: 0.7rem; }
 
-            .territorio-area { gap: 10px; padding: 10px; }
-            .seta-btn { width: 35px; height: 30px; font-size: 1.0rem; }
+            .territorio-area { gap: 6px; padding: 2px; }
+            .seta-btn { width: 24px; height: 19px; font-size: 0.7rem; }
 
             .faces-container { max-height: calc(100vh - 280px); }
 
-            .face-linha1 { flex-wrap: wrap; gap: 8px; padding: 10px; }
-            .face-territorio { font-size: 0.85rem; padding: 3px 8px; min-width: 38px; }
+            .face-linha1 { flex-wrap: wrap; gap: 8px; padding: 2px; }
+            .face-territorio { font-size: 0.85rem; padding: 1px 4px; min-width: 38px; }
             .face-endereco { font-size: 0.85rem; }
 
             /* MANTER 3 LINHAS NO MOBILE - label e campo na mesma linha */
-            .face-linha2, .face-linha3 { flex-direction: row; align-items: center; gap: 8px; padding: 8px 10px; }
+            .face-linha2, .face-linha3 { flex-direction: row; align-items: center; gap: 8px; padding: 2px 3px; }
             .face-label { min-width: 85px; font-size: 0.75rem; }
-            .face-input, .face-texto { flex: 1; width: auto; font-size: 0.85rem; padding: 6px 8px; min-width: 0; }
+            .face-input, .face-texto { flex: 1; width: auto; font-size: 0.85rem; padding: 2px 3px; min-width: 0; }
         }
 
         .status {
