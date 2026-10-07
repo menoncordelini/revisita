@@ -116,11 +116,11 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 400px;
             margin: 0 auto;
             background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 8px;
+            padding: 5px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
         }
@@ -178,11 +178,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
+            gap: 10px;  /* ==  15px */
+            margin-bottom: 8px; /* == 20px */
+            padding: 10px;    /* == 15px; */
             background: rgba(0,212,255,0.08);
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid rgba(0,212,255,0.2);
         }
 
@@ -278,7 +278,7 @@
         .face-endereco {
             color: #e4eef0;
             font-weight: bold;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             flex: 1;
             text-align: center;
         }
@@ -316,7 +316,7 @@
             border-radius: 6px;
             background: rgba(0,0,0,0.3);
             color: #fff;
-            font-size: 0.9rem;
+            font-size: 1.0rem;
             font-family: 'Courier New', monospace;
             letter-spacing: 0.5px;
             min-width: 0;
@@ -355,7 +355,7 @@
             #campoTerritorio { width: 50px; font-size: 1rem; }
 
             .territorio-area { gap: 10px; padding: 10px; }
-            .seta-btn { width: 35px; height: 35px; font-size: 1.2rem; }
+            .seta-btn { width: 35px; height: 30px; font-size: 1.0rem; }
 
             .faces-container { max-height: calc(100vh - 280px); }
 
@@ -366,7 +366,7 @@
             /* MANTER 3 LINHAS NO MOBILE - label e campo na mesma linha */
             .face-linha2, .face-linha3 { flex-direction: row; align-items: center; gap: 8px; padding: 8px 10px; }
             .face-label { min-width: 85px; font-size: 0.75rem; }
-            .face-input, .face-texto { flex: 1; width: auto; font-size: 0.75rem; padding: 6px 8px; min-width: 0; }
+            .face-input, .face-texto { flex: 1; width: auto; font-size: 0.85rem; padding: 6px 8px; min-width: 0; }
         }
 
         .status {
@@ -417,10 +417,10 @@
         </div>
 
         <div class="botoes-superiores">
-            <button id="btnEditar" onclick="editarRegistro()">✏️ Editar</button>
+            <button id="btnEditar" onclick="editarRegistro()">Editar</button>
             <button id="btnGravar" onclick="gravarRegistro()">💾 GRAVAR</button>
-            <button id="btnFiltrar" onclick="filtrarEndereco()">🔍 Filtrar</button>
-            <button id="btnExcluir" onclick="excluirRegistro()">🗑️ Excluir</button>
+            <button id="btnFiltrar" onclick="filtrarEndereco()">Filtrar</button>
+            <button id="btnExcluir" onclick="excluirRegistro()">Excluir</button>
         </div>
 
         <!-- ==== ÁREA DO TERRITÓRIO COM SETAS ==== -->
