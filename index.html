@@ -120,7 +120,7 @@
             margin: 0 auto;
             background: rgba(255,255,255,0.05);
             border-radius: 8px;
-            padding: 5px;
+            padding: 6px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
         }
@@ -138,7 +138,7 @@
             flex-wrap: wrap;
             gap: 2px;
             justify-content: center;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         button {
@@ -146,7 +146,7 @@
             border: 2px solid #00d4ff;
             background: transparent;
             color: #00d4ff;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: bold;
@@ -195,7 +195,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            /*border-radius: 50%;  */
         }
 
         .seta-esquerda { order: 1; }
@@ -211,7 +211,7 @@
         #campoTerritorio {
             width: 60px;
             padding: 8px;
-            font-size: 1.0rem;
+            font-size: 1.1rem;
             text-align: center;
             border: 2px solid #00d4ff;
             border-radius: 8px;
@@ -227,13 +227,13 @@
             overflow-x: hidden;
             border-radius: 12px;
             border: 1px solid rgba(0,212,255,0.2);
-            padding: 10px;
+            padding: 5px;
         }
 
-        .faces-container::-webkit-scrollbar { width: 8px; }
+        /*.faces-container::-webkit-scrollbar { width: 8px; }
         .faces-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
         .faces-container::-webkit-scrollbar-thumb { background: #00d4ff; border-radius: 4px; }
-        .faces-container::-webkit-scrollbar-thumb:hover { background: #00b8d4; }
+        .faces-container::-webkit-scrollbar-thumb:hover { background: #00b8d4; } */
 
         .face-quadra {
             background: rgba(255,255,255,0.03);
@@ -248,7 +248,7 @@
         /* LINHA 1: Checkbox + Território + Endereço */
         .face-linha1 {
             display: flex;
-            align-items: center;
+            align-items: left;
             gap: 12px;
             padding: 6px 8px;
             background: rgba(0,212,255,0.1);
@@ -286,7 +286,7 @@
         /* LINHA 2: Não em casa */
         .face-linha2 {
             display: flex;
-            align-items: center;
+            align-items: left;
             gap: 10px;
             padding: 10px 15px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -295,7 +295,7 @@
         /* LINHA 3: Observações */
         .face-linha3 {
             display: flex;
-            align-items: center;
+            align-items: left;
             gap: 10px;
             padding: 10px 15px;
         }
@@ -310,6 +310,7 @@
         }
 
         .face-input {
+            width: 100%;
             flex: 1;
             padding: 2px 3px;
             border: 1px solid rgba(0,212,255,0.3);
@@ -318,7 +319,8 @@
             color: #fff;
             font-size: 1.0rem;
             font-family: 'Courier New', monospace;
-            letter-spacing: 0.5px;
+            align-items: left;
+            /*letter-spacing: 0.5px; */
             min-width: 0;
         }
 
@@ -329,16 +331,19 @@
         }
 
         .face-texto {
-            flex: 1;
+            min-width: 0;
+            flex-grow: 1;
+            /*flex: 1;   */
             padding: 8px 10px;
             color: #e0e0e0;
             font-size: 0.9rem;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 0.5px;
+            /*font-family: 'Courier New', monospace; */
+            align-items: left;
+            /*letter-spacing: 0.5px; */
             word-break: break-all;
             min-height: 35px;
             background: rgba(0,0,0,0.1);
-            border-radius: 6px;
+            border-radius: 4px;
         }
 
         .face-quadra.selecionada {
@@ -352,12 +357,12 @@
             h1 { font-size: 1.2rem; }
             button { padding: 3px 4px; font-size: 0.7rem; min-width: 70px; }
             .botoes-superiores { gap: 5px; }
-            #campoTerritorio { width: 45px; font-size: 0.7rem; }
+            #campoTerritorio { width: 45px; font-size: 0.78rem; }
 
             .territorio-area { gap: 6px; padding: 2px; }
             .seta-btn { width: 24px; height: 19px; font-size: 0.7rem; }
 
-            .faces-container { max-height: calc(100vh - 280px); }
+            /*.faces-container { max-height: calc(100vh - 280px); } */
 
             .face-linha1 { flex-wrap: wrap; gap: 8px; padding: 2px; }
             .face-territorio { font-size: 0.85rem; padding: 1px 4px; min-width: 38px; }
@@ -365,8 +370,8 @@
 
             /* MANTER 3 LINHAS NO MOBILE - label e campo na mesma linha */
             .face-linha2, .face-linha3 { flex-direction: row; align-items: center; gap: 8px; padding: 2px 3px; }
-            .face-label { min-width: 85px; font-size: 0.75rem; }
-            .face-input, .face-texto { flex: 1; width: auto; font-size: 0.85rem; padding: 2px 3px; min-width: 0; }
+            .face-label { gap: 0; min-width: 0px; font-size: 0.75rem; }
+            .face-input, .face-texto { flex: 1; width: auto; font-size: 0.88rem; padding: 2px 3px; min-width: 0; }
         }
 
         .status {
@@ -442,7 +447,7 @@
         <div id="statusMsg" class="status"></div>
         <div class="encoding-info" id="encodingInfo"></div>
         <div class="info">
-            <p>Dados gravados via Firebase • Máx. 80 caracteres por campo</p>
+           <!-- <p>Dados gravados via Firebase • Máx. 80 caracteres por campo</p> -->
         </div>
     </div>
 
